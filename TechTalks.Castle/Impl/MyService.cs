@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace TechTalks.Castle.Impl;
 
-namespace TechTalks.Castle.Impl
+public class MyService : IMyService
 {
-    public class MyService : IMyService
-    {
-        private int _count;
+    private int _count;
 
-        public void DoOperation()
-        {
-            _count++;
-        }
+    public void DoOperation()
+    {
+        _count++;
+        //Console.WriteLine($"MyService Count: {_count}");
     }
 }

@@ -5,8 +5,10 @@ using TechTalks.PostSharp;
 
 var provider = Configure();
 var service = provider.GetRequiredService<UniversityService>();
+var dbContext1 = provider.GetRequiredService<UniversityDbContext>();
+var un = dbContext1.Universities.ToList();
 
-const string universityName = "A4";
+const string universityName = "A5";
 try
 {
     await service.CreateUniversityAsync(universityName);

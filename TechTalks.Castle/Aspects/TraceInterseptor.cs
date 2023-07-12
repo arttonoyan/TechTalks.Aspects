@@ -1,22 +1,22 @@
 ﻿using Castle.DynamicProxy;
 using System.Diagnostics;
 
-namespace TechTalks.Castle.Aspects
+namespace TechTalks.Castle.Aspects;
+
+public class TraceInterseptor : IInterceptor
 {
-    public class TraceInterseptor : IInterceptor
+    private readonly Stopwatch _stopwatch;
+
+    public TraceInterseptor()
     {
-        private readonly Stopwatch _stopwatch;
+        _stopwatch = new Stopwatch();
+    }
 
-        public TraceInterseptor()
-        {
-            _stopwatch = new Stopwatch();
-        }
-
-        public void Intercept(IInvocation invocation)
-        {
-            _stopwatch.Start();
-            invocation.Proceed();
-            _stopwatch.Stop();
-        }
+    public void Intercept(IInvocation invocation)
+    {
+        _stopwatch.Start();
+        invocation.Proceed();
+        _stopwatch.Stop();
+        //Console.WriteLine(_stopwatch.ElapsedMilliseconds);
     }
 }

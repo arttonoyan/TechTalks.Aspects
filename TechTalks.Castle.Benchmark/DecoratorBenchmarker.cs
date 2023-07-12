@@ -8,7 +8,8 @@ namespace TechTalks.Castle.Benchmark
     [MemoryDiagnoser]
     public class DecoratorBenchmarker
     {
-        private IMyService _myService;
+        private IMyService _myServiceImplicit;
+        private IMyService _myServiceAspect;
 
         [Params(10, 100)]
         public int Count { get; set; }
@@ -16,13 +17,13 @@ namespace TechTalks.Castle.Benchmark
         [GlobalSetup]
         public void Setup()
         {
-            //SetupImplicit();
+            SetupImplicit();
             SetupAspect();
         }
 
         private void SetupImplicit()
         {
-            _myService = new MyServiceTrace(new MyService());
+            _myServiceImplicit = new MyServiceTrace(new MyService());
         }
 
         private void SetupAspect()
@@ -30,16 +31,24 @@ namespace TechTalks.Castle.Benchmark
             IProxyGenerator generator = new ProxyGenerator();
             var myInterseptor = new TraceInterseptor();
             var myService = new MyService();
-            _myService = generator.CreateInterfaceProxyWithTarget<IMyService>(myService, myInterseptor);
+            _myServiceAspect = generator.CreateInterfaceProxyWithTarget<IMyService>(myService, myInterseptor);
         }
 
         [Benchmark(Description = "Implicit")]
-        //[Benchmark(Description = "Aspect")]
-        public void Benchmark()
+        public void BenchmarkImplicit()
         {
             for (int i = 0; i < Count; i++)
             {
-                _myService.DoOperation();
+                _myServiceImplicit.DoOperation();
+            }
+        }
+
+        [Benchmark(Description = "Aspect")]
+        public void BenchmarkAspect()
+        {
+            for (int i = 0; i < Count; i++)
+            {
+                _myServiceAspect.DoOperation();
             }
         }
     }
